@@ -1,56 +1,165 @@
-# Welcome to your Expo app 👋
+# 🚀 FeedFlow
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+FeedFlow is an AI-powered Instagram feed personalization platform that helps users customize their content experience by selecting topics they want to see more of and reducing unwanted content categories.
 
-## Get started
+## 📌 Features
 
-1. Install dependencies
+### 🔗 Instagram Connection
 
-   ```bash
-   npm install
-   ```
+* Simulated Instagram account connection
+* User onboarding flow
 
-2. Start the app
+### 🎯 Personalized Interests
 
-   ```bash
-   npx expo start
-   ```
+* Select topics to see more content from
+* Examples:
 
-In the output, you'll find options to open the app in a
+  * Fitness
+  * Education
+  * Finance
+  * Technology
+  * Travel
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### 🚫 Content Reduction Preferences
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+* Select topics to reduce from the feed
+* Examples:
 
-## Get a fresh project
+  * Cricket
+  * Movies
+  * Politics
+  * Celebrity Gossip
 
-When you're ready, run:
+### 🤖 Automation Dashboard
 
-```bash
-npm run reset-project
+* Automation status monitoring
+* Action tracking
+* Personalization progress tracking
+* Interest-based feed optimization simulation
+
+### 📊 Analytics Dashboard
+
+* Selected interests overview
+* Personalized content insights
+* Reduced content categories
+* User engagement metrics
+
+### 👤 Profile & Settings
+
+* User profile summary
+* Instagram connection status
+* Automation status
+* Privacy settings
+
+### 💾 Persistent Storage
+
+* User preferences are stored using Local Storage
+* Preferences remain available across screens and sessions
+
+---
+
+## 🛠️ Tech Stack
+
+* React Native
+* Expo Router
+* TypeScript
+* React Hooks
+* Local Storage
+
+---
+
+## 📂 Project Structure
+
+```text
+src/app
+├── index.tsx
+├── preferences.tsx
+├── connect-instagram.tsx
+├── analytics.tsx
+├── automation.tsx
+├── profile.tsx
+└── _layout.tsx
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+## 🚀 Installation
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### Clone Repository
 
-## Learn more
+```bash
+git clone https://github.com/bhargavi354/feedflow.git
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Navigate to Project
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+cd feedflow
+```
 
-## Join the community
+### Install Dependencies
 
-Join our community of developers creating universal apps.
+```bash
+npm install
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Run Application
+
+```bash
+npm run web
+```
+
+Application will be available at:
+
+```text
+http://localhost:8081
+```
+
+---
+
+## 🎯 Workflow
+
+1. Connect Instagram Account
+2. Select Interests
+3. Configure Reduced Content Categories
+4. Activate Personalization
+5. Monitor Analytics
+6. Track Automation Progress
+7. Manage Profile Settings
+
+---
+
+## 📸 Screens
+
+* Home Screen
+* Preferences Screen
+* Instagram Connection Screen
+* Analytics Dashboard
+* Automation Dashboard
+* Profile Screen
+
+---
+
+## 🌟 Future Improvements
+
+* Real Instagram API Integration
+* AI-based Feed Recommendations
+* Advanced Analytics
+* User Authentication
+* Cloud Database Support
+* Cross-device Synchronization
+
+---
+
+## 👩‍💻 Author
+
+Bhargavi Aakarapu
+
+GitHub:
+https://github.com/bhargavi354
+
+---
+
+## 📄 License
+
+This project was developed as part of a hackathon/assignment submission for educational purposes.
