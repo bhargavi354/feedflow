@@ -21,7 +21,7 @@ export default function HomeScreen() {
 
       <Pressable
         style={styles.button}
-        onPress={() => router.push("/preferences")}
+        onPress={() => router.push("/connect-instagram")}
       >
         <Text style={styles.buttonText}>Get Started</Text>
       </Pressable>

@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,32 +9,35 @@ import {
 } from "react-native";
 
 export default function ProfileScreen() {
-  const [interestCount, setInterestCount] = useState(0);
+  const [interests, setInterests] = useState<string[]>([]);
+  const [blockedTopics, setBlockedTopics] = useState<string[]>([]);
 
   useEffect(() => {
-    loadProfileData();
+    loadData();
   }, []);
 
-  const loadProfileData = async () => {
+  const loadData = async () => {
     try {
       const savedInterests =
         await AsyncStorage.getItem("interests");
 
+      const savedBlocked =
+        await AsyncStorage.getItem("blockedTopics");
+
       if (savedInterests) {
-        const interests = JSON.parse(savedInterests);
-        setInterestCount(interests.length);
+        setInterests(JSON.parse(savedInterests));
+      }
+
+      if (savedBlocked) {
+        setBlockedTopics(JSON.parse(savedBlocked));
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleLogout = () => {
-    alert("Logged Out Successfully");
-  };
-
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>
         Profile & Settings
       </Text>
@@ -44,11 +48,15 @@ export default function ProfileScreen() {
         </Text>
 
         <Text style={styles.item}>
-          📸 Instagram: Connected
+          📷 Instagram: Connected ✅
         </Text>
 
         <Text style={styles.item}>
-          ❤️ Selected Interests: {interestCount}
+          ❤️ Selected Interests: {interests.length}
+        </Text>
+
+        <Text style={styles.item}>
+          🚫 Reduced Topics: {blockedTopics.length}
         </Text>
 
         <Text style={styles.item}>
@@ -60,30 +68,64 @@ export default function ProfileScreen() {
         </Text>
       </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleLogout}
-      >
-        <Text style={styles.buttonText}>
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>
+          Selected Interests
+        </Text>
+
+        {interests.length > 0 ? (
+          interests.map((item, index) => (
+            <Text
+              key={index}
+              style={styles.listItem}
+            >
+              • {item}
+            </Text>
+          ))
+        ) : (
+          <Text>No interests selected</Text>
+        )}
+      </View>
+
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>
+          Reduced Topics
+        </Text>
+
+        {blockedTopics.length > 0 ? (
+          blockedTopics.map((item, index) => (
+            <Text
+              key={index}
+              style={styles.listItem}
+            >
+              • {item}
+            </Text>
+          ))
+        ) : (
+          <Text>No blocked topics selected</Text>
+        )}
+      </View>
+
+      <TouchableOpacity style={styles.logoutButton}>
+        <Text style={styles.logoutText}>
           Logout
         </Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     padding: 20,
-    justifyContent: "center",
   },
 
   title: {
     fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 30,
+    marginBottom: 25,
   },
 
   card: {
@@ -93,18 +135,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  item: {
-    fontSize: 18,
-    marginBottom: 15,
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
 
-  button: {
+  item: {
+    fontSize: 18,
+    marginBottom: 10,
+  },
+
+  listItem: {
+    fontSize: 16,
+    marginBottom: 8,
+  },
+
+  logoutButton: {
     backgroundColor: "#DC2626",
     padding: 15,
     borderRadius: 10,
+    marginBottom: 20,
   },
 
-  buttonText: {
+  logoutText: {
     color: "#FFFFFF",
     textAlign: "center",
     fontWeight: "bold",

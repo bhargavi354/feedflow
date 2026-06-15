@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -33,19 +34,23 @@ export default function PreferencesScreen() {
     loadPreferences();
   }, []);
 
-  const loadPreferences = () => {
-    const savedInterests =
-      localStorage.getItem("interests");
+  const loadPreferences = async () => {
+    try {
+      const savedInterests =
+        await AsyncStorage.getItem("interests");
 
-    const savedBlocked =
-      localStorage.getItem("blockedTopics");
+      const savedBlocked =
+        await AsyncStorage.getItem("blockedTopics");
 
-    if (savedInterests) {
-      setSelected(JSON.parse(savedInterests));
-    }
+      if (savedInterests) {
+        setSelected(JSON.parse(savedInterests));
+      }
 
-    if (savedBlocked) {
-      setBlocked(JSON.parse(savedBlocked));
+      if (savedBlocked) {
+        setBlocked(JSON.parse(savedBlocked));
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -69,21 +74,25 @@ export default function PreferencesScreen() {
     }
   };
 
-  const savePreferences = () => {
-    localStorage.setItem(
-      "interests",
-      JSON.stringify(selected)
-    );
+  const savePreferences = async () => {
+    try {
+      await AsyncStorage.setItem(
+        "interests",
+        JSON.stringify(selected)
+      );
 
-    localStorage.setItem(
-      "blockedTopics",
-      JSON.stringify(blocked)
-    );
+      await AsyncStorage.setItem(
+        "blockedTopics",
+        JSON.stringify(blocked)
+      );
 
-    console.log("Saved Interests:", selected);
-    console.log("Blocked Topics:", blocked);
+      console.log("Saved Interests:", selected);
+      console.log("Blocked Topics:", blocked);
 
-    router.push("/analytics");
+      router.push("/automation");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

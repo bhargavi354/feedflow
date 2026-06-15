@@ -1,24 +1,43 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 export default function AutomationScreen() {
   const [active, setActive] = useState(false);
   const [actions, setActions] = useState(0);
   const [progress, setProgress] = useState(0);
+
   const [interests, setInterests] = useState<string[]>([]);
+  const [blockedTopics, setBlockedTopics] = useState<string[]>([]);
+
+  const loadPreferences = async () => {
+    try {
+      const savedInterests =
+        await AsyncStorage.getItem("interests");
+
+      const savedBlocked =
+        await AsyncStorage.getItem("blockedTopics");
+
+      if (savedInterests) {
+        setInterests(JSON.parse(savedInterests));
+      }
+
+      if (savedBlocked) {
+        setBlockedTopics(JSON.parse(savedBlocked));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const saved = localStorage.getItem("interests");
-
-    if (saved) {
-      setInterests(JSON.parse(saved));
-    }
+    loadPreferences();
   }, []);
 
   useEffect(() => {
@@ -44,6 +63,7 @@ export default function AutomationScreen() {
         Automation Dashboard
       </Text>
 
+      {/* Status */}
       <View style={styles.card}>
         <Text style={styles.label}>
           Status: {active ? "Active ✅" : "Paused ⏸️"}
@@ -54,7 +74,10 @@ export default function AutomationScreen() {
         </Text>
 
         <Text style={styles.label}>
-          Last Activity: {active ? "Running..." : "Stopped"}
+          Last Activity:{" "}
+          {active
+            ? new Date().toLocaleTimeString()
+            : "Stopped"}
         </Text>
 
         <Text style={styles.label}>
@@ -62,6 +85,7 @@ export default function AutomationScreen() {
         </Text>
       </View>
 
+      {/* Selected Interests */}
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>
           Selected Interests ({interests.length})
@@ -80,30 +104,85 @@ export default function AutomationScreen() {
         )}
       </View>
 
+      {/* Reduced Topics */}
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>
-          Recent Actions
+          Reduced Topics ({blockedTopics.length})
+        </Text>
+
+        {blockedTopics.length > 0 ? (
+          blockedTopics.map((item, index) => (
+            <Text key={index} style={styles.item}>
+              • {item}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.item}>
+            No blocked topics selected
+          </Text>
+        )}
+      </View>
+
+      {/* Strategy */}
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>
+          Automation Strategy
         </Text>
 
         <Text style={styles.item}>
-          ✓ Liked content based on interests
+          • Prioritizes content matching selected interests
         </Text>
 
         <Text style={styles.item}>
-          ✓ Followed relevant pages
+          • Reduces exposure to blocked topics
         </Text>
 
         <Text style={styles.item}>
-          ✓ Reduced unwanted content
+          • Reinforces engagement signals
         </Text>
 
         <Text style={styles.item}>
-          ✓ Improved recommendation score
+          • Tracks personalization progress
+        </Text>
+
+        <Text style={styles.item}>
+          • Runs continuously while active
         </Text>
       </View>
 
+      {/* Activity Log */}
+      <View style={styles.card}>
+        <Text style={styles.sectionTitle}>
+          Automation Activity Log
+        </Text>
+
+        <Text style={styles.item}>
+          ✓ User preferences loaded
+        </Text>
+
+        <Text style={styles.item}>
+          ✓ Content personalization ready
+        </Text>
+
+        <Text style={styles.item}>
+          ✓ Interest signals prepared
+        </Text>
+
+        <Text style={styles.item}>
+          ✓ Blocked topics identified
+        </Text>
+
+        <Text style={styles.item}>
+          ✓ Feed optimization running
+        </Text>
+      </View>
+
+      {/* Button */}
       <TouchableOpacity
-        style={styles.button}
+        style={[
+          styles.button,
+          active && styles.activeButton,
+        ]}
         onPress={() => setActive(!active)}
       >
         <Text style={styles.buttonText}>
@@ -156,6 +235,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#2563EB",
     padding: 15,
     borderRadius: 10,
+    marginBottom: 20,
+  },
+
+  activeButton: {
+    backgroundColor: "#16A34A",
   },
 
   buttonText: {

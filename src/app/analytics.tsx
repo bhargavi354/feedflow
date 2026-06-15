@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -7,33 +6,16 @@ import {
 } from "react-native";
 
 export default function AnalyticsScreen() {
-  const [interests, setInterests] = useState<string[]>([]);
-  const [blockedTopics, setBlockedTopics] = useState<string[]>([]);
+  const interests = [
+    "Technology",
+    "Finance",
+    "Fitness",
+  ];
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = () => {
-    const savedInterests =
-      localStorage.getItem("interests");
-
-    const savedBlocked =
-      localStorage.getItem("blockedTopics");
-
-    console.log(
-      "ANALYTICS READ:",
-      savedInterests
-    );
-
-    if (savedInterests) {
-      setInterests(JSON.parse(savedInterests));
-    }
-
-    if (savedBlocked) {
-      setBlockedTopics(JSON.parse(savedBlocked));
-    }
-  };
+  const blockedTopics = [
+    "Movies",
+    "Cricket",
+  ];
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -60,39 +42,27 @@ export default function AnalyticsScreen() {
           Top Interests
         </Text>
 
-        {interests.length > 0 ? (
-          interests.map((item, index) => (
-            <Text
-              key={index}
-              style={styles.interest}
-            >
-              • {item}
-            </Text>
-          ))
-        ) : (
-          <Text style={styles.emptyText}>
-            No interests found
+        {interests.map((item, index) => (
+          <Text
+            key={index}
+            style={styles.interest}
+          >
+            • {item}
           </Text>
-        )}
+        ))}
 
         <Text style={styles.subTitle}>
           Reduced Content
         </Text>
 
-        {blockedTopics.length > 0 ? (
-          blockedTopics.map((item, index) => (
-            <Text
-              key={index}
-              style={styles.interest}
-            >
-              • {item}
-            </Text>
-          ))
-        ) : (
-          <Text style={styles.emptyText}>
-            No blocked topics
+        {blockedTopics.map((item, index) => (
+          <Text
+            key={index}
+            style={styles.interest}
+          >
+            • {item}
           </Text>
-        )}
+        ))}
       </View>
     </ScrollView>
   );
@@ -133,10 +103,5 @@ const styles = StyleSheet.create({
   interest: {
     fontSize: 16,
     marginBottom: 6,
-  },
-
-  emptyText: {
-    fontSize: 16,
-    color: "gray",
   },
 });

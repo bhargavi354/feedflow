@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -8,15 +9,23 @@ import {
 
 export default function ConnectInstagramScreen() {
   const [connected, setConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [lastSync, setLastSync] = useState("Never");
 
   const connectInstagram = () => {
-    setConnected(true);
+    setLoading(true);
 
-    const now = new Date().toLocaleString();
-    setLastSync(now);
+    setTimeout(() => {
+      setConnected(true);
 
-    console.log("Instagram Connected");
+      const now = new Date().toLocaleString();
+      setLastSync(now);
+
+      setLoading(false);
+      router.push("/preferences");
+
+      console.log("Instagram Connected");
+    }, 2000);
   };
 
   return (
@@ -27,20 +36,36 @@ export default function ConnectInstagramScreen() {
 
       <View style={styles.card}>
         <Text style={styles.label}>
-          Status: {connected ? "Connected ✅" : "Disconnected ❌"}
+          Status:{" "}
+          {loading
+            ? "Connection In Progress ⏳"
+            : connected
+            ? "Connected ✅"
+            : "Disconnected ❌"}
         </Text>
 
         <Text style={styles.label}>
           Last Sync: {lastSync}
         </Text>
+
+        <Text style={styles.label}>
+          Connection Health:{" "}
+          {connected ? "Good 🟢" : "Not Connected 🔴"}
+        </Text>
       </View>
 
       <TouchableOpacity
-        style={styles.button}
+        style={[
+          styles.button,
+          connected && styles.connectedButton,
+        ]}
         onPress={connectInstagram}
+        disabled={loading || connected}
       >
         <Text style={styles.buttonText}>
-          {connected
+          {loading
+            ? "Connecting..."
+            : connected
             ? "Instagram Connected"
             : "Connect Instagram"}
         </Text>
@@ -79,6 +104,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#2563EB",
     padding: 15,
     borderRadius: 10,
+  },
+
+  connectedButton: {
+    backgroundColor: "#16A34A",
   },
 
   buttonText: {
