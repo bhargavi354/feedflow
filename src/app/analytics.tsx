@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -6,16 +8,32 @@ import {
 } from "react-native";
 
 export default function AnalyticsScreen() {
-  const interests = [
-    "Technology",
-    "Finance",
-    "Fitness",
-  ];
+  const [interests, setInterests] = useState<string[]>([]);
+  const [blockedTopics, setBlockedTopics] = useState<string[]>([]);
 
-  const blockedTopics = [
-    "Movies",
-    "Cricket",
-  ];
+  useEffect(() => {
+    loadAnalytics();
+  }, []);
+
+  const loadAnalytics = async () => {
+    try {
+      const savedInterests =
+        await AsyncStorage.getItem("interests");
+
+      const savedBlocked =
+        await AsyncStorage.getItem("blockedTopics");
+
+      if (savedInterests) {
+        setInterests(JSON.parse(savedInterests));
+      }
+
+      if (savedBlocked) {
+        setBlockedTopics(JSON.parse(savedBlocked));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -42,27 +60,39 @@ export default function AnalyticsScreen() {
           Top Interests
         </Text>
 
-        {interests.map((item, index) => (
-          <Text
-            key={index}
-            style={styles.interest}
-          >
-            • {item}
+        {interests.length > 0 ? (
+          interests.map((item, index) => (
+            <Text
+              key={index}
+              style={styles.interest}
+            >
+              • {item}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.interest}>
+            No interests selected
           </Text>
-        ))}
+        )}
 
         <Text style={styles.subTitle}>
           Reduced Content
         </Text>
 
-        {blockedTopics.map((item, index) => (
-          <Text
-            key={index}
-            style={styles.interest}
-          >
-            • {item}
+        {blockedTopics.length > 0 ? (
+          blockedTopics.map((item, index) => (
+            <Text
+              key={index}
+              style={styles.interest}
+            >
+              • {item}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.interest}>
+            No reduced topics selected
           </Text>
-        ))}
+        )}
       </View>
     </ScrollView>
   );
